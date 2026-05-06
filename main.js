@@ -1,41 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Scroll Reveal Animation
-    const observerOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
+    const checkButton = document.getElementById('checkButton');
+    const swingPeriodInput = document.getElementById('swingPeriod');
+    const rollPeriodInput = document.getElementById('rollPeriod');
+    const resultArea = document.getElementById('resultArea');
+    const diffValueSpan = document.getElementById('diffValue');
+    const messageParagraph = document.getElementById('message');
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, observerOptions);
+    checkButton.addEventListener('click', () => {
+        const swingPeriod = parseFloat(swingPeriodInput.value);
+        const rollPeriod = parseFloat(rollPeriodInput.value);
 
-    const revealElements = document.querySelectorAll('.reveal');
-    revealElements.forEach(el => observer.observe(el));
+        if (isNaN(swingPeriod) || isNaN(rollPeriod)) {
+            alert('両方の周期に有効な数値を入力してください。');
+            return;
+        }
 
-    // Smooth scroll for navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+        const diff = Math.abs(swingPeriod - rollPeriod);
+        const roundedDiff = diff.toFixed(3); // 小数第3位まで表示
+
+        diffValueSpan.textContent = roundedDiff;
+        resultArea.classList.remove('hidden');
+
+        if (diff <= 0.05) {
+            messageParagraph.textContent = '周期が近いため、共振しやすい可能性があります';
+            messageParagraph.className = 'message warning';
+            resultArea.style.borderLeftColor = 'var(--warning-color)';
+        } else {
+            messageParagraph.textContent = '周期差があるため、条件の見直しが必要です';
+            messageParagraph.className = 'message safe';
+            resultArea.style.borderLeftColor = 'var(--primary-color)';
+        }
     });
-
-    // Suble mouse move effect on Hero
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 50;
-            const y = (window.innerHeight / 2 - e.pageY) / 50;
-            hero.style.transform = `translateX(${x}px) translateY(${y}px)`;
-        });
-    }
-
-    // Log a small retro message in console
-    console.log("%c sbt1211 Portfolio %c System Ready.", "background: #5ac8fa; color: #fff; padding: 2px 5px; border-radius: 3px;", "color: #5ac8fa;");
 });

@@ -3,85 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sbt1211 | Exploring the Future with AI</title>
+    <title>受動歩行機 共振チェックツール</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-
-    <nav class="container">
-        <div class="nav-inner">
-            <span class="mono">VER. 2026.4.22</span>
-            <div class="nav-links">
-                <a href="#profile" class="mono">PROFILE</a>
-                <a href="#vision" class="mono">VISION</a>
-                <a href="#goals" class="mono">GOALS</a>
-            </div>
+    <div class="container">
+        <h1>受動歩行機 共振チェックツール</h1>
+        
+        <div class="input-group">
+            <label for="swingPeriod">遊脚の周期 [s]:</label>
+            <input type="number" id="swingPeriod" step="0.01" min="0" placeholder="例: 1.05">
         </div>
-    </nav>
-
-    <main class="container">
-        <!-- Hero Section -->
-        <section class="hero reveal">
-            <p class="mono">PORTFOLIO.EXE</p>
-            <h1>sbt1211</h1>
-            <p>Exploring New Frontiers with AI Partners</p>
-        </section>
-
-        <!-- Profile Section -->
-        <section id="profile" class="reveal">
-            <div class="section-tag mono">01. Who I Am</div>
-            <div class="card">
-                <h2>好奇心と探究の心</h2>
-                <p>
-                    私は何に対しても強い好奇心を持ち、物事を深く探究することが大好きです。<br>
-                    新しい技術や概念に触れるとき、その裏側にある仕組みや可能性を解き明かすことに喜びを感じます。
-                </p>
-            </div>
-        </section>
-
-        <!-- AI Vision Section -->
-        <section id="vision" class="reveal">
-            <div class="section-tag mono">02. AI as a Partner</div>
-            <div class="card">
-                <h2>可能性を広げるパートナー</h2>
-                <p>
-                    私にとってAIは、単なる便利なツールではありません。<br>
-                    それは「自分の可能性を広げてくれる最高のパートナー」だと考えています。<br>
-                    人間だけでは到達できない視点や、新しい創造性の扉を一緒に開いてくれる存在です。
-                </p>
-            </div>
-        </section>
-
-        <!-- Interaction Section -->
-        <section id="interaction" class="reveal">
-            <div class="section-tag mono">03. Co-existence</div>
-            <div class="card">
-                <h2>AIとの向き合い方</h2>
-                <p>
-                    AIを遠ざけるのではなく、とにかくたくさん触れること。それが私のスタイルです。<br>
-                    AIに頼り切るべき部分と、自分自身で考えるべき部分。<br>
-                    その境界線を意識しながら、どう付き合っていくのが最適かを日々模索しています。
-                </p>
-            </div>
-        </section>
-
-        <!-- Goals Section -->
-        <section id="goals" class="reveal">
-            <div class="section-tag mono">04. Future Quest</div>
-            <div class="card">
-                <h2>創りたいもの・探究したいこと</h2>
-                <p>
-                    新しくてワクワクするような体験を、自分だけでなく多くの人に届けていきたい。<br>
-                    そのために、学びを最大化するアプリケーションや、個人の能力を拡張するエージェントの可能性を追求しています。
-                </p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="container reveal">
-        <p class="mono">© 2026 sbt1211 // STAY CURIOUS.</p>
-    </footer>
-
+        
+        <div class="input-group">
+            <label for="rollPeriod">ロボット全体の横揺れ周期 [s]:</label>
+            <input type="number" id="rollPeriod" step="0.01" min="0" placeholder="例: 1.00">
+        </div>
+        
+        <button id="checkButton">チェックする</button>
+        
+        <div id="resultArea" class="result-area hidden">
+            <p>周期の差: <span id="diffValue"></span> 秒</p>
+            <p id="message" class="message"></p>
+        </div>
+    </div>
+    
     <script src="main.js"></script>
 </body>
 </html>
