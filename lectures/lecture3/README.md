@@ -1,7 +1,7 @@
 # 第3回課題
 
 ## Discord ID
-shibatashunsuke1211
+sbt1211
 
 ## 初期プロトタイプ
 未提出（任意なのでOK）
