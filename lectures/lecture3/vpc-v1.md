@@ -1,3 +1,5 @@
 # VPC v1
 
-VPC画像は別途作成。
+![VPC v1](../../assets/vpc-v1.png)
+
+VPC画像を添付。
