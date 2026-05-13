@@ -1,33 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>受動歩行機 共振チェックツール</title>
+    <title>第三回課題</title>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-    <div class="container">
-        <h1>受動歩行機 共振チェックツール</h1>
-        
-        <div class="input-group">
-            <label for="swingPeriod">遊脚の周期 [s]:</label>
-            <input type="number" id="swingPeriod" step="0.01" min="0" placeholder="例: 1.05">
-        </div>
-        
-        <div class="input-group">
-            <label for="rollPeriod">ロボット全体の横揺れ周期 [s]:</label>
-            <input type="number" id="rollPeriod" step="0.01" min="0" placeholder="例: 1.00">
-        </div>
-        
-        <button id="checkButton">チェックする</button>
-        
-        <div id="resultArea" class="result-area hidden">
-            <p>周期の差: <span id="diffValue"></span> 秒</p>
-            <p id="message" class="message"></p>
-        </div>
-    </div>
-    
+    <img src="assets/vpc-v1.png" width="400">
     <script src="main.js"></script>
 </body>
+
 </html>
