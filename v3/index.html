@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>課題提出サポートアプリ v3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366F1;
+      --primary-hover: #4F46E5;
+      --text-main: #1F2937;
+      --text-light: #6B7280;
+      --bg-gradient-1: #c2e9fb;
+      --bg-gradient-2: #a1c4fd;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-2) 0%, var(--bg-gradient-1) 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 60px 20px;
+      color: var(--text-main);
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 850px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      padding: 36px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.7);
+      font-family: inherit;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      color: var(--text-main);
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.95);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    }
+    
+    input::placeholder, textarea::placeholder {
+      color: #9CA3AF;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+    }
+
+    .task-item {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: all 0.3s ease;
+      animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .task-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .task-item.completed {
+      opacity: 0.6;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .task-item.completed .task-title {
+      text-decoration: line-through;
+      color: var(--text-light);
+    }
+
+    .task-checkbox {
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      accent-color: var(--primary);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .task-content {
+      flex: 1;
+      word-break: break-word;
+    }
+
+    .task-title {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .task-meta {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: var(--text-light);
+      font-style: italic;
+      padding: 20px 0;
+    }
+
+    .github-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .step-number {
+      background: var(--primary);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    }
+
+    .step-content strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .step-code {
+      background: #1e1e1e;
+      color: #e5e5e5;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      display: inline-block;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .github-tip {
+      background: rgba(255, 255, 255, 0.6);
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-top: 24px;
+      border-left: 4px solid var(--primary);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Left Column: Form & Task List -->
+    <div class="main-content">
+      <div class="glass-panel" style="margin-bottom: 30px;">
+        <h2>📝 新しい課題を登録</h2>
+        <form id="task-form">
+          <label for="task-name">課題名</label>
+          <input type="text" id="task-name" placeholder="例：Web3・AI概論 第3回宿題" required>
+          
+          <label for="task-date">締切日</label>
+          <input type="date" id="task-date" required>
+          
+          <label for="task-deliverables">提出物</label>
+          <textarea id="task-deliverables" placeholder="例：index.html, README.md, スクリーンショット" rows="3" required></textarea>
+          
+          <button type="submit">一覧に追加する</button>
+        </form>
+      </div>
+
+      <div class="glass-panel">
+        <h2>📋 課題リスト</h2>
+        <div id="task-list">
+          <p class="empty-msg" id="empty-msg">現在登録されている課題はありません。上のフォームから追加してください。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: GitHub Instructions -->
+    <div class="side-content">
+      <div class="glass-panel">
+        <h2>🚀 GitHub 提出手順</h2>
+        <p style="color: var(--text-light); margin-bottom: 24px; font-size: 15px; line-height: 1.5;">
+          課題が完成したら、以下の手順でターミナルからGitHubに提出しましょう。
+        </p>
+        
+        <div class="github-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <strong>変更状況の確認</strong>
+            <div class="step-code">git status</div>
+          </div>
+        </div>
+        
+        <div class="github-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <strong>変更の追加 (ステージング)</strong>
+            <div class="step-code">git add .</div>
+          </div>
+        </div>
+
+        <div class="github-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <strong>変更の記録 (コミット)</strong>
+            <div class="step-code">git commit -m "課題の提出"</div>
+          </div>
+        </div>
+
+        <div class="github-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <strong>アップロード (プッシュ)</strong>
+            <div class="step-code">git push origin main</div>
+          </div>
+        </div>
+        
+        <div class="github-tip">
+          💡 <strong>Tip:</strong> デフォルトのブランチ名が <code>master</code> の場合は <code>git push origin master</code> と入力してください。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('task-form');
+      const taskList = document.getElementById('task-list');
+      
+      // 課題データを保存する配列
+      let tasks = [];
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('task-name').value;
+        const date = document.getElementById('task-date').value;
+        const deliverables = document.getElementById('task-deliverables').value;
+        
+        // 配列に追加
+        tasks.push({
+          id: Date.now(),
+          name: name,
+          date: date,
+          deliverables: deliverables,
+          completed: false
+        });
+        
+        // 画面の再描画
+        renderTasks();
+        form.reset();
+      });
+
+      // 締切までの残り日数を計算する関数
+      function getRemainingDays(deadline) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // 日付のみで比較
+        
+        const deadlineDate = new Date(deadline);
+        deadlineDate.setHours(0, 0, 0, 0);
+        
+        const diffTime = deadlineDate.getTime() - today.getTime();
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      }
+
+      // 課題リストの描画関数
+      function renderTasks() {
+        taskList.innerHTML = '<p class="empty-msg" id="empty-msg">現在登録されている課題はありません。上のフォームから追加してください。</p>';
+        const emptyMsg = document.getElementById('empty-msg');
+
+        if(tasks.length === 0) {
+          emptyMsg.style.display = 'block';
+          return;
+        }
+        
+        emptyMsg.style.display = 'none';
+
+        // 締切日（date）の昇順でソート
+        const sortedTasks = [...tasks].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // HTML要素を作成して追加
+        sortedTasks.forEach(task => {
+          const taskItem = document.createElement('div');
+          taskItem.className = 'task-item';
+          if(task.completed) taskItem.classList.add('completed');
+          
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'task-checkbox';
+          checkbox.checked = task.completed;
+          
+          checkbox.addEventListener('change', (e) => {
+            task.completed = e.target.checked;
+            renderTasks();
+          });
+
+          // 残り日数のテキスト作成
+          const diffDays = getRemainingDays(task.date);
+          let remainingText = '';
+          if (diffDays === 0) {
+            remainingText = '<span style="color: #e11d48; font-weight: bold;">本日締切！</span>';
+          } else if (diffDays < 0) {
+            remainingText = `<span style="color: #e11d48; font-weight: bold;">締切超過 (${Math.abs(diffDays)}日)</span>`;
+          } else {
+            remainingText = `<span style="color: #d97706; font-weight: bold;">残り${diffDays}日</span>`;
+          }
+
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'task-content';
+          
+          contentDiv.innerHTML = `
+            <div class="task-title">${escapeHTML(task.name)}</div>
+            <div class="task-meta">📅 締切: ${escapeHTML(task.date)} （${remainingText}）</div>
+            <div class="task-meta" style="white-space: pre-wrap;">📦 提出物: ${escapeHTML(task.deliverables)}</div>
+          `;
+
+          taskItem.appendChild(checkbox);
+          taskItem.appendChild(contentDiv);
+          
+          taskList.appendChild(taskItem);
+        });
+      }
+
+      function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+          tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag]));
+      }
+    });
+  </script>
+</body>
+</html>
